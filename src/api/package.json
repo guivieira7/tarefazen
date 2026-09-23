@@ -1,0 +1,23 @@
+{
+  "name": "tarefazen-api",
+  "version": "1.0.0",
+  "description": "API do TarefaZen - Sistema colaborativo de gestão de tarefas",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "vitest run",
+    "lint": "eslint src"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "pg": "^8.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.9.0",
+    "supertest": "^7.0.0",
+    "vitest": "^2.0.5"
+  }
+}

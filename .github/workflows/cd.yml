@@ -1,0 +1,46 @@
+name: CD
+
+# Disparado após o CI concluir com sucesso na branch main (seção 6 do PGCS).
+# Neste estágio acadêmico o deploy real em uma VPS ainda depende de
+# credenciais de acesso que não existem no repositório de exemplo; por isso
+# os passos de deploy ficam demonstrados aqui e devem ser completados com o
+# host/credenciais reais antes do uso em produção.
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+    branches: [main]
+
+jobs:
+  deploy-staging:
+    name: Deploy em Staging
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy (placeholder)
+        run: |
+          echo "Aqui entraria o deploy via SSH/Ansible/Terraform apply na VPS de staging."
+          echo "Ex.: ssh usuario@staging 'docker compose pull && docker compose up -d'"
+
+      - name: Smoke test / health check
+        run: |
+          echo "Aqui entraria um curl no endpoint /health do ambiente de staging."
+
+  deploy-production:
+    name: Deploy em Produção (gate manual)
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    environment: production # ambiente com regra de aprovação manual no GitHub
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy (placeholder)
+        run: |
+          echo "Aqui entraria o rolling update em produção após aprovação do gate."
+
+      - name: Smoke test pós-deploy
+        run: |
+          echo "Aqui entraria a verificação de saúde (/health) em produção."

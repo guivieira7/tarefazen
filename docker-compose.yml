@@ -1,0 +1,41 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: tarefazen
+      POSTGRES_PASSWORD: tarefazen
+      POSTGRES_DB: tarefazen
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./migrations:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tarefazen"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: ./src/api
+    environment:
+      DATABASE_URL: postgres://tarefazen:tarefazen@db:5432/tarefazen
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ./src/web
+    environment:
+      VITE_API_URL: http://localhost:3000
+    ports:
+      - "5173:80"
+    depends_on:
+      - api
+
+volumes:
+  db_data:
