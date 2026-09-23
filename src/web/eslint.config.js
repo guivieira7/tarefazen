@@ -1,1 +1,1 @@
-export default [{ rules: {} }];
+export default [{ files: ["src/**/*.{js,jsx}"], rules: {} }];
