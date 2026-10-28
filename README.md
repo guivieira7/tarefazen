@@ -1,5 +1,7 @@
 # TarefaZen (TZ)
 
+Plano de GCS: [docs/PGCS_TarefaZen.pdf](docs/PGCS_TarefaZen.pdf)
+
 Sistema colaborativo de gestão de tarefas — API em Node.js/Express, front-end em React e persistência em PostgreSQL. Este repositório acompanha o **Plano de Gerenciamento de Configuração (PGCS)** do projeto, com enfoque em práticas DevOps (CI/CD, IaC).
 
 ## Estrutura do repositório
