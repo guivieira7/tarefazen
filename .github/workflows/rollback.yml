@@ -1,0 +1,38 @@
+name: Rollback
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag da Release para a qual voltar (ex.: v1.0.0)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  rollback:
+    name: Rollback em Produção (gate manual)
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      TAG: ${{ inputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag }}
+
+      - name: Deploy da tag (placeholder)
+        run: |
+          echo "Aqui entraria o deploy da versão $TAG na VPS de produção."
+          echo "Ex.: ssh usuario@producao 'TAG=$TAG docker compose pull && docker compose up -d'"
+
+      - name: Smoke test pós-rollback
+        run: |
+          echo "Aqui entraria a verificação de saúde (/health) em produção."
+
+      - name: Marcar a Release como Latest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release edit "$TAG" --latest --repo "${{ github.repository }}"
