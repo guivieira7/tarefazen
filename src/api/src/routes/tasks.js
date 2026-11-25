@@ -13,6 +13,11 @@ tasksRouter.post("/", async (req, res) => {
   if (!title || !title.trim()) {
     return res.status(400).json({ error: "O campo 'title' é obrigatório." });
   }
+  if (title.trim().length > 100) {
+    return res
+      .status(400)
+      .json({ error: "O campo 'title' deve ter no máximo 100 caracteres." });
+  }
   const task = await createTask({ title, description });
   res.status(201).json(task);
 });
