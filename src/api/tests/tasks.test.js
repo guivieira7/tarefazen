@@ -39,6 +39,20 @@ describe("API de tarefas do TarefaZen", () => {
     expect(res.status).toBe(400);
   });
 
+  it("rejeita título com mais de 100 caracteres", async () => {
+    const res = await request(app)
+      .post("/api/tasks")
+      .send({ title: "a".repeat(101) });
+    expect(res.status).toBe(400);
+  });
+
+  it("aceita título com exatamente 100 caracteres", async () => {
+    const res = await request(app)
+      .post("/api/tasks")
+      .send({ title: "a".repeat(100) });
+    expect(res.status).toBe(201);
+  });
+
   it("atualiza o status de uma tarefa", async () => {
     const create = await request(app).post("/api/tasks").send({ title: "Testar API" });
     const update = await request(app)
